@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--
+  CHICK-FIL-A BRAND COMPLIANCE:
+  - Brand Voice: "Bright-Hearted Host" (natural, welcoming, joyful, humble)
+  - Typography: Apercu (primary), Rooney (subheads)
+  - Primary Color: Chick-fil-A Red #DD0033 (PMS 186C)
+-->
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Roadmap to Growth | Chick-fil-A Foothill Ranch</title>
+  <!-- NOTE: Apercu and Rooney are Chick-fil-A licensed fonts. Font files must be obtained through official brand licensing. -->
+  <style>
+    /* Brand Fonts */
+    :root {
+      /* Primary Brand Colors */
+      --red: #DD0033;
+      --white: #FFFFFF;
+      --cream: #FDF6EE;
+      --tan: #F2E8D9;
+      --text: #1A1A1A;
+      --text-light: #555;
+
+      /* Typography */
+      --font-display: 'Rooney', Georgia, serif;
+      --font-body: 'Apercu', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-body);
+      color: var(--text);
+      background: var(--white);
+      line-height: 1.7;
+      font-size: 17px;
+    }
+
+    /* Header */
+    .header {
+      background: var(--white);
+      padding: 2rem 0;
+      border-bottom: 1px solid rgba(0,0,0,0.1);
+      text-align: center;
+    }
+
+    .header img {
+      height: 50px;
+      margin: 0 auto 0.5rem;
+    }
+
+    .header h1 {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+    }
+
+    .header p {
+      color: var(--text-light);
+      font-size: 1.05rem;
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    /* Container */
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem;
+    }
+
+    /* Intro Section */
+    .intro {
+      text-align: center;
+      margin-bottom: 4rem;
+      padding: 2.5rem;
+      background: var(--cream);
+      border-radius: 8px;
+    }
+
+    .intro h2 {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      color: var(--text);
+      margin-bottom: 1rem;
+    }
+
+    .intro p {
+      font-size: 1.05rem;
+      color: var(--text-light);
+      max-width: 650px;
+      margin: 0 auto;
+      line-height: 1.8;
+    }
+
+    /* Roadmap */
+    .roadmap {
+      position: relative;
+    }
+
+    /* Vertical Line */
+    .roadmap::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: linear-gradient(to bottom, var(--red), rgba(221, 0, 51, 0.3));
+      transform: translateX(-50%);
+      z-index: 0;
+    }
+
+    /* Level Card */
+    .level {
+      position: relative;
+      margin-bottom: 3rem;
+      padding: 0 1rem;
+      z-index: 1;
+    }
+
+    .level-card {
+      background: var(--white);
+      border: 2px solid var(--red);
+      border-radius: 8px;
+      padding: 2rem;
+      position: relative;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .level-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 30px rgba(221, 0, 51, 0.15);
+    }
+
+    /* Level Number Badge */
+    .level-badge {
+      position: absolute;
+      left: 50%;
+      top: -20px;
+      transform: translateX(-50%);
+      width: 40px;
+      height: 40px;
+      background: var(--red);
+      color: var(--white);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1.1rem;
+      border: 3px solid var(--white);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .level-title {
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      color: var(--red);
+      margin-bottom: 0.75rem;
+      text-align: center;
+    }
+
+    .level-description {
+      color: var(--text);
+      margin-bottom: 1.25rem;
+      text-align: center;
+      font-size: 1.05rem;
+    }
+
+    .level-requirements {
+      background: var(--cream);
+      padding: 1.5rem;
+      border-radius: 6px;
+      margin-top: 1.25rem;
+    }
+
+    .level-requirements h4 {
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text);
+      margin-bottom: 1rem;
+    }
+
+    .level-requirements ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .level-requirements li {
+      padding-left: 1.75rem;
+      margin-bottom: 0.75rem;
+      position: relative;
+      color: var(--text-light);
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    .level-requirements li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      color: var(--red);
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+
+    /* Arrow Divider */
+    .arrow-divider {
+      text-align: center;
+      margin: 2rem 0;
+      position: relative;
+      z-index: 2;
+    }
+
+    .arrow-divider svg {
+      width: 40px;
+      height: 40px;
+      fill: var(--red);
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+    }
+
+    /* CTA Section */
+    .cta-section {
+      text-align: center;
+      margin-top: 4rem;
+      padding: 3rem 2rem;
+      background: var(--red);
+      border-radius: 8px;
+      color: var(--white);
+    }
+
+    .cta-section h3 {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+      color: var(--white);
+    }
+
+    .cta-section p {
+      font-size: 1.1rem;
+      margin-bottom: 2rem;
+      color: rgba(255,255,255,0.9);
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 1rem 2.5rem;
+      background: var(--white);
+      color: var(--red);
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 4px;
+      transition: all 0.3s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .container {
+        padding: 2rem 1rem;
+      }
+
+      .level-title {
+        font-size: 1.3rem;
+      }
+
+      .intro h2 {
+        font-size: 1.5rem;
+      }
+
+      .roadmap::before {
+        left: 20px;
+      }
+
+      .level-badge {
+        left: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <img src="images/logo.png" alt="Chick-fil-A Foothill Ranch" />
+    <h1>Roadmap to Growth</h1>
+    <p>Your path to leadership at Chick-fil-A Foothill Ranch</p>
+  </header>
+
+  <!-- Container -->
+  <div class="container">
+
+    <!-- Intro Section -->
+    <section class="intro">
+      <h2>Grow With Us</h2>
+      <p>
+        At Chick-fil-A Foothill Ranch, we believe in investing in our team members.
+        Our roadmap to growth is designed to help you develop leadership skills,
+        build meaningful relationships, and create a lasting impact—both in our
+        restaurant and in your life.
+      </p>
+    </section>
+
+    <!-- Roadmap -->
+    <div class="roadmap">
+
+      <!-- Level 1: Team Member -->
+      <div class="level">
+        <div class="level-card">
+          <div class="level-badge">1</div>
+          <h3 class="level-title">Team Member</h3>
+          <p class="level-description">
+            Your journey begins here. As a Team Member, you'll learn the fundamentals
+            of exceptional hospitality and become part of a team that values excellence.
+          </p>
+          <div class="level-requirements">
+            <h4>What You'll Learn</h4>
+            <ul>
+              <li>Core service standards and second-mile service</li>
+              <li>Operational excellence in Front of House or Back of House</li>
+              <li>Building genuine connections with guests and team members</li>
+              <li>Time management and working efficiently under pressure</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="arrow-divider">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z" transform="rotate(90 12 12)"/>
+        </svg>
+      </div>
+
+      <!-- Level 2: Trainer -->
+      <div class="level">
+        <div class="level-card">
+          <div class="level-badge">2</div>
+          <h3 class="level-title">Trainer</h3>
+          <p class="level-description">
+            Step into a leadership role by investing in others. Trainers teach new
+            team members our standards and help them grow in confidence and skill.
+          </p>
+          <div class="level-requirements">
+            <h4>Requirements & Responsibilities</h4>
+            <ul>
+              <li>Demonstrate consistent excellence in position proficiency</li>
+              <li>Complete Trainer certification and development program</li>
+              <li>Mentor and develop new team members with patience and care</li>
+              <li>Model our culture and core values daily</li>
+              <li>Provide constructive feedback and encouragement</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="arrow-divider">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z" transform="rotate(90 12 12)"/>
+        </svg>
+      </div>
+
+      <!-- Level 3: Shift Lead -->
+      <div class="level">
+        <div class="level-card">
+          <div class="level-badge">3</div>
+          <h3 class="level-title">Shift Lead</h3>
+          <p class="level-description">
+            Lead by example during shifts. Shift Leads ensure smooth operations,
+            guide the team, and make real-time decisions to deliver remarkable experiences.
+          </p>
+          <div class="level-requirements">
+            <h4>Requirements & Responsibilities</h4>
+            <ul>
+              <li>Proven leadership ability and strong operational knowledge</li>
+              <li>Complete Shift Lead training and certification</li>
+              <li>Oversee shift execution and team performance</li>
+              <li>Handle guest concerns with grace and problem-solving skills</li>
+              <li>Support, coach, and encourage team members during service</li>
+              <li>Communicate effectively with leadership about shift needs</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="arrow-divider">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z" transform="rotate(90 12 12)"/>
+        </svg>
+      </div>
+
+      <!-- Level 4: Assistant Director -->
+      <div class="level">
+        <div class="level-card">
+          <div class="level-badge">4</div>
+          <h3 class="level-title">Assistant Director</h3>
+          <p class="level-description">
+            Partner with Directors to manage key areas of the business. Assistant
+            Directors take ownership of systems, people development, and strategic initiatives.
+          </p>
+          <div class="level-requirements">
+            <h4>Requirements & Responsibilities</h4>
+            <ul>
+              <li>Demonstrated leadership impact and commitment to excellence</li>
+              <li>Complete Assistant Director development program</li>
+              <li>Manage specific business areas (operations, training, marketing, etc.)</li>
+              <li>Develop and mentor Shift Leads and Trainers</li>
+              <li>Drive measurable results in your area of responsibility</li>
+              <li>Collaborate with leadership on strategic planning</li>
+              <li>Uphold culture and ensure team member engagement</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="arrow-divider">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z" transform="rotate(90 12 12)"/>
+        </svg>
+      </div>
+
+      <!-- Level 5: Director -->
+      <div class="level">
+        <div class="level-card">
+          <div class="level-badge">5</div>
+          <h3 class="level-title">Director</h3>
+          <p class="level-description">
+            Lead major functional areas of the restaurant. Directors shape strategy,
+            develop leaders, and ensure operational excellence across all shifts.
+          </p>
+          <div class="level-requirements">
+            <h4>Requirements & Responsibilities</h4>
+            <ul>
+              <li>Proven ability to lead teams and drive sustainable results</li>
+              <li>Complete Director leadership development program</li>
+              <li>Oversee critical business functions and set strategic direction</li>
+              <li>Develop Assistant Directors and build future leaders</li>
+              <li>Own accountability for operational metrics and guest satisfaction</li>
+              <li>Partner with Operator on vision, culture, and long-term goals</li>
+              <li>Represent the restaurant in the community and industry</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="arrow-divider">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z" transform="rotate(90 12 12)"/>
+        </svg>
+      </div>
+
+      <!-- Level 6: Executive Director -->
+      <div class="level">
+        <div class="level-card">
+          <div class="level-badge">6</div>
+          <h3 class="level-title">Executive Director</h3>
+          <p class="level-description">
+            The highest leadership role in our restaurant. Executive Directors serve
+            as the Operator's right hand, leading the entire leadership team and
+            shaping the future of the business.
+          </p>
+          <div class="level-requirements">
+            <h4>Requirements & Responsibilities</h4>
+            <ul>
+              <li>Exceptional leadership, vision, and proven business acumen</li>
+              <li>Complete Executive Director certification and ongoing development</li>
+              <li>Serve as second-in-command and strategic partner to the Operator</li>
+              <li>Lead and develop the entire Director team</li>
+              <li>Drive overall restaurant performance and long-term growth</li>
+              <li>Champion culture, values, and team member experience</li>
+              <li>Represent the Operator in community and corporate engagements</li>
+              <li>Mentor future restaurant Operators and leaders</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+      <h3>Ready to Grow?</h3>
+      <p>
+        Your leadership journey starts with a single step. Let's talk about where
+        you are today and where you want to go tomorrow.
+      </p>
+      <a href="https://sites.google.com/cfafoothill.com/access/team-members" class="btn">Visit Team Portal</a>
+    </section>
+
+  </div>
+
+</body>
+</html>
