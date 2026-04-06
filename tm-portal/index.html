@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loading - CFA Foothill Ranch</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #F9F7F4;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .loader-container {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        .counter {
+            position: fixed;
+            top: 3rem;
+            left: 3rem;
+            font-size: 5rem;
+            font-weight: 800;
+            color: #1a1a1a;
+            letter-spacing: -0.04em;
+            z-index: 10;
+            line-height: 1;
+        }
+
+        .image-wrapper {
+            position: relative;
+            width: 320px;
+            height: 480px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.6s ease-in-out;
+        }
+
+        .slide.active {
+            opacity: 1;
+        }
+
+        .slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        /* Fade out animation */
+        .loader-container.fade-out {
+            animation: fadeOut 0.8s ease forwards;
+        }
+
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+                visibility: hidden;
+            }
+        }
+
+        /* Mobile responsive */
+        @media (max-width: 768px) {
+            .counter {
+                font-size: 3.5rem;
+                top: 2rem;
+                left: 2rem;
+            }
+
+            .image-wrapper {
+                width: 280px;
+                height: 420px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .counter {
+                font-size: 2.5rem;
+                top: 1.5rem;
+                left: 1.5rem;
+            }
+
+            .image-wrapper {
+                width: 220px;
+                height: 330px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="loader-container" id="loaderContainer">
+        <div class="counter" id="counter">0</div>
+
+        <div class="image-wrapper">
+            <!-- Team member photos -->
+            <!-- Use portrait-oriented photos (vertical) for best results -->
+            <div class="slide active">
+                <img src="../images/Intro1.JPG" alt="Team member 1">
+            </div>
+            <div class="slide">
+                <img src="../images/Intro2.JPG" alt="Team member 2">
+            </div>
+            <div class="slide">
+                <img src="../images/Intro3.JPG" alt="Team member 3">
+            </div>
+            <div class="slide">
+                <img src="../images/Intro4.JPG" alt="Team member 4">
+            </div>
+            <div class="slide">
+                <img src="../images/Intro5.JPG" alt="Team member 5">
+            </div>
+            <div class="slide">
+                <img src="../images/Intro6.JPG" alt="Team member 6">
+            </div>
+            <div class="slide">
+                <img src="../images/Intro7.JPG" alt="Team member 7">
+            </div>
+            <div class="slide">
+                <img src="../images/Intro8.JPG" alt="Team member 8">
+            </div>
+            <div class="slide">
+                <img src="../images/Intro9.JPG" alt="Team member 9">
+            </div>
+            <div class="slide">
+                <img src="../images/Intro10.JPG" alt="Team member 10">
+            </div>
+        </div>
+    </div>
+
+    <div style="position: fixed; bottom: 0; left: 0; right: 0; text-align: center; padding: 1rem; background: rgba(249, 247, 244, 0.95); border-top: 1px solid rgba(0,0,0,0.05); z-index: 10000;">
+        <p style="margin: 0; font-size: 0.7rem; color: rgba(0,0,0,0.4); letter-spacing: 0.5px;">MANAGED BY THORNSBERRY HOLDINGS LLC | Developed by <a href="https://mohammadzayed.netlify.app/" target="_blank" rel="noopener noreferrer" style="color: rgba(0,0,0,0.5); text-decoration: none; transition: color 0.3s ease;">Mohammad Zayed</a></p>
+    </div>
+
+    <script>
+        const counter = document.getElementById('counter');
+        const slides = document.querySelectorAll('.slide');
+        const loaderContainer = document.getElementById('loaderContainer');
+
+        let count = 0;
+        let currentSlide = 0;
+        const targetCount = 100;
+        const duration = 3500; // 3.5 seconds total duration
+        const increment = targetCount / (duration / 16); // ~60fps
+
+        // Image change breakpoints (when to change photos)
+        const imageChangePoints = [11, 22, 33, 44, 55, 66, 77, 88, 99];
+        let nextChangePoint = 0;
+
+        function updateCounter() {
+            if (count < targetCount) {
+                count += increment;
+                if (count > targetCount) count = targetCount;
+
+                counter.textContent = Math.floor(count);
+
+                // Check if we should change the image
+                if (nextChangePoint < imageChangePoints.length &&
+                    count >= imageChangePoints[nextChangePoint]) {
+                    nextChangePoint++;
+                    changeSlide();
+                }
+
+                requestAnimationFrame(updateCounter);
+            } else {
+                counter.textContent = targetCount;
+                // Wait a moment at 100, then redirect
+                setTimeout(() => {
+                    loaderContainer.classList.add('fade-out');
+                    setTimeout(() => {
+                        window.location.href = 'portal-v2.html';
+                    }, 800);
+                }, 300);
+            }
+        }
+
+        function changeSlide() {
+            // Remove active class from current slide
+            slides[currentSlide].classList.remove('active');
+
+            // Move to next slide
+            currentSlide = (currentSlide + 1) % slides.length;
+
+            // Add active class to new slide
+            slides[currentSlide].classList.add('active');
+        }
+
+        // Start the animation
+        updateCounter();
+    </script>
+</body>
+</html>
+
