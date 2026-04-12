@@ -305,6 +305,11 @@
             height: 20px;
         }
 
+        /* LOADING SPINNER */
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
         /* RESPONSIVE */
         @media (max-width: 900px) {
             .bento-grid { grid-template-columns: 1fr; }
@@ -373,7 +378,7 @@
             </div>
 
             <div class="quick-access-bar">
-                <a href="https://www.hotschedules.com" target="_blank" class="qa-item">
+                <a href="https://www.hotschedules.com/hs/login.jsp" target="_blank" class="qa-item">
                     <i data-lucide="calendar"></i> <span data-i18n="hotschedules">HotSchedules</span>
                 </a>
                 <a href="tel:9496993881" class="qa-item">
@@ -454,6 +459,12 @@
     <!-- MODAL OVERLAY -->
     <div id="modal-overlay" onclick="if(event.target === this) closeModal()">
         <div class="modal" id="modal-container">
+            <!-- Loading Indicator -->
+            <div id="modal-loading" style="display: none; text-align: center; padding: 60px 20px;">
+                <div style="display: inline-block; width: 50px; height: 50px; border: 4px solid rgba(229, 22, 54, 0.2); border-top-color: #E51636; border-radius: 50%; animation: spin 1s linear infinite;"></div>
+                <p style="margin-top: 20px; color: var(--text-muted); font-size: 1rem;">Loading form...</p>
+            </div>
+
             <!-- Airtable Iframe Content -->
             <div id="modal-iframe-content" style="display: none;">
                 <iframe id="airtable-iframe"
@@ -794,17 +805,26 @@
             const iframeContent = document.getElementById('modal-iframe-content');
             const formContent = document.getElementById('modal-form-content');
             const successState = document.getElementById('success-state');
+            const loadingIndicator = document.getElementById('modal-loading');
 
             // Check if this form has an Airtable embed
             if (airtableForms[type]) {
-                // Show Airtable iframe
-                const iframe = document.getElementById('airtable-iframe');
-                iframe.src = airtableForms[type];
-
-                iframeContent.style.display = 'block';
+                // Show loading indicator, hide iframe initially
+                loadingIndicator.style.display = 'block';
+                iframeContent.style.display = 'none';
                 formContent.style.display = 'none';
                 successState.style.display = 'none';
                 modalContainer.classList.add('iframe-mode');
+
+                // Load Airtable iframe
+                const iframe = document.getElementById('airtable-iframe');
+                iframe.src = airtableForms[type];
+
+                // Hide loading and show iframe once it loads
+                iframe.onload = function() {
+                    loadingIndicator.style.display = 'none';
+                    iframeContent.style.display = 'block';
+                };
             } else {
                 // Show custom form
                 const template = formTemplates[type] || formTemplates.punch;
@@ -836,6 +856,8 @@
             // Clear iframe to stop loading
             document.getElementById('airtable-iframe').src = '';
             document.getElementById('modal-container').classList.remove('iframe-mode');
+            // Hide loading indicator
+            document.getElementById('modal-loading').style.display = 'none';
         }
 
         function toggleRole(roleId) {

@@ -1,0 +1,77 @@
+# Netlify Configuration File
+# https://docs.netlify.com/configure-builds/file-based-configuration/
+
+# Security and caching headers
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "SAMEORIGIN"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+# Cache images for 8 hours (28800 seconds)
+[[headers]]
+  for = "/images/*"
+  [headers.values]
+    Cache-Control = "public, max-age=28800, immutable"
+
+# Cache CSS files for 8 hours
+[[headers]]
+  for = "/css/*"
+  [headers.values]
+    Cache-Control = "public, max-age=28800"
+
+# Cache JavaScript files for 8 hours
+[[headers]]
+  for = "/js/*"
+  [headers.values]
+    Cache-Control = "public, max-age=28800"
+
+# Cache individual image files for 8 hours
+[[headers]]
+  for = "/*.jpg"
+  [headers.values]
+    Cache-Control = "public, max-age=28800, immutable"
+
+[[headers]]
+  for = "/*.jpeg"
+  [headers.values]
+    Cache-Control = "public, max-age=28800, immutable"
+
+[[headers]]
+  for = "/*.png"
+  [headers.values]
+    Cache-Control = "public, max-age=28800, immutable"
+
+[[headers]]
+  for = "/*.JPG"
+  [headers.values]
+    Cache-Control = "public, max-age=28800, immutable"
+
+[[headers]]
+  for = "/*.JPEG"
+  [headers.values]
+    Cache-Control = "public, max-age=28800, immutable"
+
+[[headers]]
+  for = "/*.PNG"
+  [headers.values]
+    Cache-Control = "public, max-age=28800, immutable"
+
+# Cache fonts for longer (1 week)
+[[headers]]
+  for = "/*.woff2"
+  [headers.values]
+    Cache-Control = "public, max-age=604800, immutable"
+
+[[headers]]
+  for = "/*.woff"
+  [headers.values]
+    Cache-Control = "public, max-age=604800, immutable"
+
+# Don't cache HTML files (always get fresh version)
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
