@@ -1,3 +1,35 @@
+/* ---------- Chick-fil-A Brand Fonts ---------- */
+@font-face {
+  font-family: 'Apercu';
+  src: url('../../fonts/Apercu Font/Apercu-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Apercu';
+  src: url('../../fonts/Apercu Font/Apercu-Medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Apercu';
+  src: url('../../fonts/Apercu Font/Apercu-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Rooney';
+  src: url('../../fonts/Rooney/Web fonts/RooneyPro-Medium.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Rooney';
+  src: url('../../fonts/Rooney/Web fonts/RooneyPro-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+}
+
 :root {
     --bg-cream: #F9F7F4;
     --cfa-red: #E51636;
@@ -6,6 +38,8 @@
     --text-muted: #666;
     --card-radius: 24px;
     --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    --font-display: 'Rooney', Georgia, serif;
+    --font-body: 'Apercu', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
 * {
@@ -16,10 +50,14 @@
 
 body {
     background-color: var(--bg-cream);
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-family: var(--font-body);
     color: var(--text-dark);
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+    font-family: var(--font-display);
 }
 
 .content-wrapper {

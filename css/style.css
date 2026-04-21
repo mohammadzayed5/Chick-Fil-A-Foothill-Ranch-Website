@@ -3,39 +3,37 @@
    Inspired by thedwarfhouse.com
    ============================================= */
 
-/* ---------- Brand Fonts (Add @font-face when licensed fonts are obtained) ---------- */
-/*
+/* ---------- Brand Fonts (Chick-fil-A Licensed) ---------- */
 @font-face {
   font-family: 'Apercu';
-  src: url('fonts/Apercu-Regular.woff2') format('woff2');
+  src: url('../fonts/Apercu Font/Apercu-Regular.otf') format('opentype');
   font-weight: 400;
   font-style: normal;
 }
 @font-face {
   font-family: 'Apercu';
-  src: url('fonts/Apercu-Medium.woff2') format('woff2');
+  src: url('../fonts/Apercu Font/Apercu-Medium.otf') format('opentype');
   font-weight: 500;
   font-style: normal;
 }
 @font-face {
   font-family: 'Apercu';
-  src: url('fonts/Apercu-Bold.woff2') format('woff2');
+  src: url('../fonts/Apercu Font/Apercu-Bold.otf') format('opentype');
   font-weight: 700;
   font-style: normal;
 }
 @font-face {
   font-family: 'Rooney';
-  src: url('fonts/Rooney-Regular.woff2') format('woff2');
+  src: url('../fonts/Rooney/Web fonts/RooneyPro-Medium.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
 }
 @font-face {
   font-family: 'Rooney';
-  src: url('fonts/Rooney-Bold.woff2') format('woff2');
+  src: url('../fonts/Rooney/Web fonts/RooneyPro-Bold.woff2') format('woff2');
   font-weight: 700;
   font-style: normal;
 }
-*/
 
 /* ---------- CSS Variables ---------- */
 :root {
@@ -43,11 +41,15 @@
   --red: #DD0033; /* Chick-fil-A Red (PMS 186C) - BRAND STANDARD */
   --white: #FFFFFF;
 
-  /* Secondary/Tertiary Colors - Verify against brand standards document */
-  --red-dark: #B80000; /* Dark Red - verify exact hex from brand palette */
-  --cream: #FDF6EE; /* Cream - verify if approved tertiary color */
-  --tan: #F2E8D9; /* Tan - verify if approved tertiary color */
-  --brown: #5C3D2E; /* Brown - verify if approved tertiary color */
+  /* Secondary/Tertiary Colors - BRAND COMPLIANCE NOTES:
+     - Per brand standards, external communications should use 75% primary palette (White/Red)
+     - Approved Secondary: Navy, Dark Red, Dark Gray, Gray, Light Gray
+     - Tertiary colors are primarily for flavor cues
+     - Consider replacing cream/tan with white for better brand compliance */
+  --red-dark: #B80000; /* Dark Red - appears in approved secondary palette */
+  --cream: #FDF6EE; /* Cream - NOT in standard palette, consider using white instead */
+  --tan: #F2E8D9; /* Tan - NOT in standard palette, consider using white instead */
+  --brown: #5C3D2E; /* Brown - NOT in standard palette, avoid if possible */
   --text: #1A1A1A; /* Dark Gray/Black for text */
   --text-light: #555; /* Medium Gray for secondary text */
   --nav-height: 72px;
@@ -74,6 +76,8 @@ body {
   background: var(--white);
   line-height: 1.7;
   font-size: 17px;
+  font-variant-ligatures: none; /* BRAND STANDARD: No ligatures per typography guidelines */
+  -webkit-font-variant-ligatures: none;
 }
 
 img {
@@ -94,8 +98,15 @@ h1, h2, h3, h4 {
   font-weight: 700;
 }
 
-h1 { font-size: clamp(2.5rem, 6vw, 5rem); }
-h2 { font-size: clamp(1.8rem, 4vw, 2.8rem); margin-bottom: 1rem; }
+h1 {
+  font-size: clamp(2.5rem, 6vw, 5rem);
+  letter-spacing: -0.03em; /* -30 tracking per brand standards */
+}
+h2 {
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  margin-bottom: 1rem;
+  letter-spacing: -0.03em; /* -30 tracking per brand standards */
+}
 h3 { font-size: 1.4rem; margin-bottom: 0.5rem; }
 h4 { font-size: 1rem; font-family: var(--font-body); font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; }
 
@@ -344,11 +355,11 @@ p { margin-bottom: 1rem; color: var(--text-light); }
 .hero-bg {
   position: absolute;
   inset: 0;
-  background: 
+  background:
     linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.35) 60%, rgba(0,0,0,0.6) 100%),
     url('../images/hero.jpg') center/cover no-repeat;
-  /* Fallback gradient if no image */
-  background-color: #1a0a05;
+  /* Fallback color if no image - using dark gray from approved secondary palette */
+  background-color: var(--text);
 }
 
 .hero-content {
@@ -382,7 +393,7 @@ p { margin-bottom: 1rem; color: var(--text-light); }
    ABOUT
    ============================================= */
 .section-about {
-  background: var(--cream);
+  background: var(--white); /* Changed from cream to white per brand standards (75% primary palette) */
 }
 
 .about-grid {
@@ -412,7 +423,7 @@ p { margin-bottom: 1rem; color: var(--text-light); }
   height: 100%;
   border-radius: 4px;
   object-fit: cover;
-  background: var(--tan);
+  background: var(--white); /* Changed from tan to white per brand standards */
 }
 
 .gallery-img.tall {
@@ -491,7 +502,7 @@ p { margin-bottom: 1rem; color: var(--text-light); }
    BENEFITS
    ============================================= */
 .section-benefits {
-  background: linear-gradient(to bottom, #F5F5F0 0%, #F5F5F0 40%, var(--red) 40%, var(--red) 100%);
+  background: linear-gradient(to bottom, var(--white) 0%, var(--white) 40%, var(--red) 40%, var(--red) 100%);
   padding: 80px 0 100px;
 }
 
@@ -716,7 +727,7 @@ p { margin-bottom: 1rem; color: var(--text-light); }
   width: 100%;
   height: 240px;
   overflow: hidden;
-  background: var(--tan);
+  background: var(--white); /* Changed from tan to white per brand standards */
 }
 
 .job-image-wrap img {
@@ -849,10 +860,90 @@ p { margin-bottom: 1rem; color: var(--text-light); }
 }
 
 /* =============================================
+   FUNDRAISING
+   ============================================= */
+.section-fundraising {
+  background: var(--white); /* Changed from cream to white per brand standards (75% primary palette) */
+  padding: 6rem 0;
+}
+
+.fundraising-content {
+  text-align: center;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.fundraising-intro {
+  font-size: 1.15rem;
+  line-height: 1.8;
+  color: var(--text-muted);
+  margin-bottom: 4rem;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.fundraising-steps {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 3rem;
+  margin-bottom: 3rem;
+}
+
+.fundraising-step {
+  text-align: center;
+}
+
+.step-number {
+  width: 60px;
+  height: 60px;
+  background: var(--red);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0 auto 1.5rem;
+}
+
+.fundraising-step h4 {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+  color: var(--text);
+}
+
+.fundraising-step p {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.email-link {
+  color: var(--red);
+  text-decoration: none;
+  font-weight: 600;
+  transition: opacity 0.3s;
+}
+
+.email-link:hover {
+  opacity: 0.8;
+  text-decoration: underline;
+}
+
+.fundraising-actions {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* =============================================
    VISIT
    ============================================= */
 .section-visit {
-  background: #F5F5F0;
+  background: var(--white); /* Changed from #F5F5F0 to white per brand standards */
   padding: 0;
 }
 
@@ -1178,6 +1269,21 @@ p { margin-bottom: 1rem; color: var(--text-light); }
 
   .visit-info {
     padding: 2rem;
+  }
+
+  /* Fundraising responsive */
+  .fundraising-steps {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  .fundraising-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .fundraising-actions .btn {
+    width: 100%;
   }
 
   .footer-inner {
