@@ -796,6 +796,7 @@
             'change-fund': 'https://airtable.com/embed/appk8daAH4MlCdyyg/shrfAmEzAh21avYTG',
             'call-out': 'https://airtable.com/embed/appoNWAeZT1gCYWB4/shrN3qRHsWDyjavvi',
             survey: 'https://airtable.com/embed/appAUQIq4BZJZnpOf/pagYYsP2ROun7GPm5/form',
+            surveyEs: 'https://airtable.com/embed/appqlDynR1ZpO3OXS/pagYYsP2ROun7GPm5/form',
             'leader-app': 'https://form.jotform.com/253016050327041'
         };
 
@@ -816,9 +817,12 @@
                 successState.style.display = 'none';
                 modalContainer.classList.add('iframe-mode');
 
-                // Load Airtable iframe
+                // Load Airtable iframe (use Spanish survey when language is Español)
                 const iframe = document.getElementById('airtable-iframe');
-                iframe.src = airtableForms[type];
+                const formKey = (type === 'survey' && currentLang === 'es' && airtableForms.surveyEs && !airtableForms.surveyEs.startsWith('PASTE_'))
+                    ? 'surveyEs'
+                    : type;
+                iframe.src = airtableForms[formKey];
 
                 // Hide loading and show iframe once it loads
                 iframe.onload = function() {
