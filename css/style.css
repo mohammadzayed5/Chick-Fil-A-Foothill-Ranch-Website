@@ -52,6 +52,7 @@
   --brown: #5C3D2E; /* Brown - NOT in standard palette, avoid if possible */
   --text: #1A1A1A; /* Dark Gray/Black for text */
   --text-light: #555; /* Medium Gray for secondary text */
+  --text-muted: #6B6B6B; /* Muted Gray for tertiary text (fundraising intro/steps) */
   --nav-height: 72px;
   --font-display: 'Rooney', Georgia, serif;
   --font-body: 'Apercu', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
