@@ -45,6 +45,11 @@ yarn-error.log*
 # Netlify
 .netlify
 
+# AI agent tooling (installed locally per-project, do not commit)
+.agents/
+.claude/skills/
+skills-lock.json
+
 README.md
 
 fonts

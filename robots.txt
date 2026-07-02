@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /tm-portal/
+
+Sitemap: https://cfafoothill.com/sitemap.xml
