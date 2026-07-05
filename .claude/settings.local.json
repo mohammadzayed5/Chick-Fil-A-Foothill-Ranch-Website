@@ -2,7 +2,20 @@
   "permissions": {
     "allow": [
       "Bash(python3 *)",
-      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:8080/tm-portal/portal-v2.html)"
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:8080/tm-portal/portal-v2.html)",
+      "Bash(npx *)",
+      "Bash(npm install *)",
+      "Bash(netlify status *)",
+      "Bash(netlify sites:list)",
+      "Bash(netlify link *)",
+      "Bash(netlify api *)",
+      "Bash(curl -s \"https://open-api.netlify.com/\")",
+      "Bash(curl -s https://api.netlify.com/api/v1/dns_zones/69e7f84e92f4385ae2d9af22/dns_records -H 'Authorization: Bearer __TRACKED_VAR__')",
+      "Bash(dig +short TXT cfafoothill.com @8.8.8.8)",
+      "Bash(curl -s -o /dev/null -w \"HTTP %{http_code}\\\\n\" https://cfafoothill.com/sitemap.xml)",
+      "Bash(curl -s -o /dev/null -w \"HTTP %{http_code}\\\\n\" https://cfafoothill.com/robots.txt)",
+      "Bash(curl -sI https://cfafoothill.com/sitemap.xml)",
+      "Bash(curl -sI https://cfafoothill.com/robots.txt)"
     ]
   }
 }

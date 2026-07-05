@@ -156,6 +156,7 @@
     </div>
 
     <div style="position: fixed; bottom: 0; left: 0; right: 0; text-align: center; padding: 1rem; background: rgba(249, 247, 244, 0.95); border-top: 1px solid rgba(0,0,0,0.05); z-index: 10000;">
+        <p style="margin: 0 0 0.35rem; font-size: 0.75rem; color: rgba(0,0,0,0.5); letter-spacing: 0.5px;">Tap anywhere to skip</p>
         <p style="margin: 0; font-size: 0.7rem; color: rgba(0,0,0,0.4); letter-spacing: 0.5px;">MANAGED BY THORNSBERRY HOLDINGS LLC | Developed by <a href="https://mohammadzayed.netlify.app/" target="_blank" rel="noopener noreferrer" style="color: rgba(0,0,0,0.5); text-decoration: none; transition: color 0.3s ease;">Mohammad Zayed</a></p>
     </div>
 
@@ -166,6 +167,7 @@
 
         let count = 0;
         let currentSlide = 0;
+        let skipped = false;
         const targetCount = 100;
         const duration = 3500; // 3.5 seconds total duration
         const increment = targetCount / (duration / 16); // ~60fps
@@ -174,7 +176,21 @@
         const imageChangePoints = [11, 22, 33, 44, 55, 66, 77, 88, 99];
         let nextChangePoint = 0;
 
+        function goToPortal() {
+            if (skipped) return;
+            skipped = true;
+            loaderContainer.classList.add('fade-out');
+            setTimeout(() => {
+                window.location.href = 'portal-v2.html';
+            }, 300);
+        }
+
+        // Skip intro on tap/click or key press
+        loaderContainer.addEventListener('click', goToPortal);
+        document.addEventListener('keydown', goToPortal);
+
         function updateCounter() {
+            if (skipped) return;
             if (count < targetCount) {
                 count += increment;
                 if (count > targetCount) count = targetCount;
@@ -193,6 +209,8 @@
                 counter.textContent = targetCount;
                 // Wait a moment at 100, then redirect
                 setTimeout(() => {
+                    if (skipped) return;
+                    skipped = true;
                     loaderContainer.classList.add('fade-out');
                     setTimeout(() => {
                         window.location.href = 'portal-v2.html';

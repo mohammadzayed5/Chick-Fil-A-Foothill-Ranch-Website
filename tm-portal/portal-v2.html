@@ -9,7 +9,6 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
-    <script src="airtable-config.js"></script>
 
     <style>
         :root {
@@ -254,23 +253,6 @@
         }
         .btn-secondary:hover { color: var(--text-dark); }
 
-        /* SUCCESS STATE */
-        .success-state {
-            text-align: center; display: none;
-            animation: fadeIn 0.6s ease forwards;
-        }
-        .success-state i {
-            color: #10b981; width: 80px; height: 80px;
-            margin-bottom: 24px; stroke-width: 2;
-        }
-        .success-state h2 {
-            font-size: 1.8rem; margin-bottom: 12px;
-        }
-        .success-state p {
-            color: var(--text-muted); margin: 15px 0 30px;
-            font-size: 1.05rem; line-height: 1.6;
-        }
-
         /* FOOTER */
         footer {
             text-align: center; padding: 80px 0 40px;
@@ -460,40 +442,35 @@
 
     <!-- MODAL OVERLAY -->
     <div id="modal-overlay" onclick="if(event.target === this) closeModal()">
-        <div class="modal" id="modal-container">
+        <div class="modal" id="modal-container" role="dialog" aria-modal="true" tabindex="-1">
             <!-- Loading Indicator -->
             <div id="modal-loading" style="display: none; text-align: center; padding: 60px 20px;">
                 <div style="display: inline-block; width: 50px; height: 50px; border: 4px solid rgba(229, 22, 54, 0.2); border-top-color: #E51636; border-radius: 50%; animation: spin 1s linear infinite;"></div>
-                <p style="margin-top: 20px; color: var(--text-muted); font-size: 1rem;">Loading form...</p>
+                <p style="margin-top: 20px; color: var(--text-muted); font-size: 1rem;" data-i18n="loading-form">Loading form...</p>
+            </div>
+
+            <!-- Iframe Load Error -->
+            <div id="modal-load-error" style="display: none; text-align: center; padding: 60px 20px;">
+                <p style="color: var(--text-muted); font-size: 1rem; margin-bottom: 20px;" data-i18n="form-load-error">The form could not load. Please check your connection.</p>
+                <a id="modal-load-error-link" href="#" target="_blank" rel="noopener" style="color: var(--cfa-blue); font-weight: 600; text-decoration: none;" data-i18n="open-new-tab">Open form in a new tab</a>
             </div>
 
             <!-- Airtable Iframe Content -->
             <div id="modal-iframe-content" style="display: none;">
                 <iframe id="airtable-iframe"
-                    style="width: 100%; height: 700px; border: none; border-radius: 16px; background: white;"
+                    style="width: 100%; height: clamp(320px, calc(85vh - 180px), 700px); border: none; border-radius: 16px; background: white;"
                     frameborder="0"
                     allowfullscreen>
                 </iframe>
-                <button type="button" onclick="closeModal()" class="btn" style="margin-top: 20px;">Close</button>
+                <button type="button" onclick="closeModal()" class="btn" style="margin-top: 20px;" data-i18n="close-btn">Close</button>
             </div>
 
-            <!-- Custom Form Content -->
+            <!-- Custom Content (handbook, roadmap) -->
             <div id="modal-form-content">
                 <h2 id="modal-title">Form</h2>
-                <p class="modal-desc" id="modal-desc">Please fill out the details below.</p>
-
-                <form id="portal-form" onsubmit="submitForm(event)">
-                    <div id="dynamic-fields"></div>
-                    <button type="submit" class="btn">Submit Request</button>
-                    <button type="button" onclick="closeModal()" class="btn-secondary">Cancel</button>
-                </form>
-            </div>
-
-            <div id="success-state" class="success-state">
-                <i data-lucide="check-circle"></i>
-                <h2>Request Submitted</h2>
-                <p>Your submission has been logged successfully. Thank you for your excellence!</p>
-                <button onclick="closeModal()" class="btn">Close</button>
+                <p class="modal-desc" id="modal-desc"></p>
+                <div id="dynamic-fields"></div>
+                <button type="button" onclick="closeModal()" class="btn-secondary" data-i18n="close-btn">Close</button>
             </div>
         </div>
     </div>
@@ -537,117 +514,6 @@
         const fields = document.getElementById('dynamic-fields');
 
         const formTemplates = {
-            punch: {
-                title: 'Time Punch Adjustment',
-                desc: 'Please submit before Saturday 10 PM to be included in the current payroll cycle.',
-                fields: `
-                    <div class="form-group"><label>Your Name *</label><input type="text" required></div>
-                    <div class="form-group"><label>Date of Missed Punch *</label><input type="date" required></div>
-                    <div class="form-group"><label>Punch Type *</label><select required>
-                        <option value="">Select...</option>
-                        <option>Clock In</option>
-                        <option>Clock Out</option>
-                        <option>Both</option>
-                    </select></div>
-                    <div class="form-group"><label>Time *</label><input type="time" required></div>
-                    <div class="form-group"><label>Reason *</label><textarea rows="3" required></textarea></div>
-                `
-            },
-            break: {
-                title: 'Break Notification',
-                desc: 'Let leadership know when you\'re taking your required break.',
-                fields: `
-                    <div class="form-group"><label>Your Name *</label><input type="text" required></div>
-                    <div class="form-group"><label>Break Type *</label><select required>
-                        <option>10-Minute Rest</option>
-                        <option>30-Minute Meal</option>
-                    </select></div>
-                    <div class="form-group"><label>Current Position *</label><input type="text" required></div>
-                `
-            },
-            sick: {
-                title: 'Sick Pay Request',
-                desc: 'Submit your wellness hours request. Doctor\'s note required for absences over 3 days.',
-                fields: `
-                    <div class="form-group"><label>Your Name *</label><input type="text" required></div>
-                    <div class="form-group"><label>Date From *</label><input type="date" required></div>
-                    <div class="form-group"><label>Date To *</label><input type="date" required></div>
-                    <div class="form-group"><label>Hours Requested *</label><input type="number" step="0.5" required></div>
-                    <div class="form-group"><label>Reason *</label><textarea rows="3" required></textarea></div>
-                `
-            },
-            'call-log': {
-                title: 'Store Call Log',
-                desc: 'Document important calls for operational tracking.',
-                fields: `
-                    <div class="form-group"><label>Caller Name *</label><input type="text" required></div>
-                    <div class="form-group"><label>Phone Number</label><input type="tel"></div>
-                    <div class="form-group"><label>Category *</label><select required>
-                        <option>Guest Recovery</option>
-                        <option>Vendor/Supplier</option>
-                        <option>Corporate</option>
-                        <option>Employee Matter</option>
-                        <option>Maintenance</option>
-                    </select></div>
-                    <div class="form-group"><label>Priority *</label><select required>
-                        <option>Urgent</option>
-                        <option>High</option>
-                        <option>Medium</option>
-                        <option>Low</option>
-                    </select></div>
-                    <div class="form-group"><label>Notes *</label><textarea rows="4" required></textarea></div>
-                `
-            },
-            'call-out': {
-                title: 'Attendance Tracker',
-                desc: 'Log team member absences and coverage details.',
-                fields: `
-                    <div class="form-group"><label>Team Member Name *</label><input type="text" required></div>
-                    <div class="form-group"><label>Date *</label><input type="date" required></div>
-                    <div class="form-group"><label>Scheduled Shift *</label><input type="text" placeholder="e.g., 9:00 AM - 5:00 PM" required></div>
-                    <div class="form-group"><label>Notice Given *</label><select required>
-                        <option>2+ hours before</option>
-                        <option>1-2 hours before</option>
-                        <option>Less than 1 hour</option>
-                        <option>No call/No show</option>
-                    </select></div>
-                    <div class="form-group"><label>Reason *</label><textarea rows="3" required></textarea></div>
-                `
-            },
-            'change-fund': {
-                title: 'Change Fund Request',
-                desc: 'Request register denominations and vault adjustments.',
-                fields: `
-                    <div class="form-group"><label>Requesting Leader *</label><input type="text" required></div>
-                    <div class="form-group"><label>Register/Location *</label><select required>
-                        <option>Front Counter 1</option>
-                        <option>Front Counter 2</option>
-                        <option>Drive Thru 1</option>
-                        <option>Drive Thru 2</option>
-                        <option>Cash Office</option>
-                    </select></div>
-                    <div class="form-group"><label>Quarters (Rolls)</label><input type="number" min="0" value="0"></div>
-                    <div class="form-group"><label>Ones ($)</label><input type="number" min="0" value="0"></div>
-                    <div class="form-group"><label>Fives ($)</label><input type="number" min="0" value="0"></div>
-                    <div class="form-group"><label>Notes</label><textarea rows="2"></textarea></div>
-                `
-            },
-            'leader-app': {
-                title: 'Leadership Application',
-                desc: 'Apply for leadership positions at Foothill Ranch.',
-                fields: `
-                    <div class="form-group"><label>Full Name *</label><input type="text" required></div>
-                    <div class="form-group"><label>Email *</label><input type="email" required></div>
-                    <div class="form-group"><label>Position Applying For *</label><select required>
-                        <option>Trainer</option>
-                        <option>Team Leader</option>
-                        <option>Shift Leader</option>
-                        <option>Director</option>
-                    </select></div>
-                    <div class="form-group"><label>Why leadership? *</label><textarea rows="4" required></textarea></div>
-                    <div class="form-group"><label>Top 3 Strengths *</label><textarea rows="3" required></textarea></div>
-                `
-            },
             handbook: {
                 title: 'Employee Handbook',
                 desc: 'Team Member Handbook - Thornsberry Holdings LLC (January 2024)',
@@ -658,25 +524,6 @@
                             <a href="handbook.pdf" download style="color: var(--cfa-blue); text-decoration: none; font-weight: 600;">📥 Download Handbook PDF</a>
                         </p>
                     </div>
-                `
-            },
-            survey: {
-                title: 'Team Member Survey',
-                desc: 'Your feedback helps us improve. This survey is anonymous.',
-                fields: `
-                    <div class="form-group"><label>Department *</label><select required>
-                        <option>Front of House (FOH)</option>
-                        <option>Back of House (BOH)</option>
-                        <option>Leadership</option>
-                    </select></div>
-                    <div class="form-group"><label>Job Satisfaction (1-5) *</label><select required>
-                        <option>5 - Very Satisfied</option>
-                        <option>4 - Satisfied</option>
-                        <option>3 - Neutral</option>
-                        <option>2 - Dissatisfied</option>
-                        <option>1 - Very Dissatisfied</option>
-                    </select></div>
-                    <div class="form-group"><label>What could we improve?</label><textarea rows="4"></textarea></div>
                 `
             },
             roadmap: {
@@ -798,110 +645,131 @@
             'change-fund': 'https://airtable.com/embed/appk8daAH4MlCdyyg/shrfAmEzAh21avYTG',
             'call-out': 'https://airtable.com/embed/appoNWAeZT1gCYWB4/shrN3qRHsWDyjavvi',
             survey: 'https://airtable.com/embed/appAUQIq4BZJZnpOf/pagYYsP2ROun7GPm5/form',
-            surveyEs: 'https://airtable.com/embed/appqlDynR1ZpO3OXS/pagYYsP2ROun7GPm5/form',
             'leader-app': 'https://form.jotform.com/253016050327041'
         };
+
+        // Spanish versions — replace each PASTE_ placeholder with the embed URL of the
+        // translated Airtable/JotForm form. Until then, Spanish mode falls back to English.
+        const airtableFormsEs = {
+            punch: 'PASTE_SPANISH_PUNCH_URL_HERE',
+            sick: 'PASTE_SPANISH_SICK_URL_HERE',
+            'change-fund': 'PASTE_SPANISH_CHANGE_FUND_URL_HERE',
+            'call-out': 'PASTE_SPANISH_CALL_OUT_URL_HERE',
+            survey: 'https://airtable.com/embed/appqlDynR1ZpO3OXS/pagYYsP2ROun7GPm5/form',
+            'leader-app': 'PASTE_SPANISH_LEADER_APP_URL_HERE'
+        };
+
+        // Maps form type -> translation key for the modal's accessible title
+        const modalTitleKeys = {
+            punch: 'punch-title', sick: 'sick-title', 'change-fund': 'changefund-title',
+            'call-out': 'callout-title', survey: 'survey-title', 'leader-app': 'leaderapp-title',
+            handbook: 'handbook-title', roadmap: 'roadmap-title'
+        };
+
+        let iframeLoadTimer = null;
+        let lastFocusedElement = null;
+
+        function t(key) {
+            return translations[currentLang][key] || translations.en[key] || '';
+        }
+
+        function showIframeError(formUrl) {
+            document.getElementById('modal-loading').style.display = 'none';
+            document.getElementById('modal-iframe-content').style.display = 'none';
+            const errorEl = document.getElementById('modal-load-error');
+            document.getElementById('modal-load-error-link').href = formUrl;
+            errorEl.style.display = 'block';
+        }
 
         function openModal(type) {
             currentFormType = type;
             const modalContainer = document.getElementById('modal-container');
             const iframeContent = document.getElementById('modal-iframe-content');
             const formContent = document.getElementById('modal-form-content');
-            const successState = document.getElementById('success-state');
             const loadingIndicator = document.getElementById('modal-loading');
+            const loadError = document.getElementById('modal-load-error');
 
-            // Check if this form has an Airtable embed
+            modalContainer.setAttribute('aria-label', t(modalTitleKeys[type]));
+
+            // Check if this form has an embed URL
             if (airtableForms[type]) {
                 // Show loading indicator, hide iframe initially
                 loadingIndicator.style.display = 'block';
                 iframeContent.style.display = 'none';
                 formContent.style.display = 'none';
-                successState.style.display = 'none';
+                loadError.style.display = 'none';
                 modalContainer.classList.add('iframe-mode');
 
-                // Load Airtable iframe (use Spanish survey when language is Español)
-                const iframe = document.getElementById('airtable-iframe');
-                const formKey = (type === 'survey' && currentLang === 'es' && airtableForms.surveyEs && !airtableForms.surveyEs.startsWith('PASTE_'))
-                    ? 'surveyEs'
-                    : type;
-                iframe.src = airtableForms[formKey];
+                // Prefer the Spanish form when the portal is in Español and one exists
+                const esUrl = airtableFormsEs[type];
+                const formUrl = (currentLang === 'es' && esUrl && !esUrl.startsWith('PASTE_'))
+                    ? esUrl
+                    : airtableForms[type];
 
-                // Hide loading and show iframe once it loads
+                const iframe = document.getElementById('airtable-iframe');
+                iframe.src = formUrl;
+
+                // Fall back to an "open in new tab" link if the embed fails or stalls
+                clearTimeout(iframeLoadTimer);
+                iframeLoadTimer = setTimeout(() => showIframeError(formUrl), 15000);
+                iframe.onerror = function() {
+                    clearTimeout(iframeLoadTimer);
+                    showIframeError(formUrl);
+                };
                 iframe.onload = function() {
+                    clearTimeout(iframeLoadTimer);
                     loadingIndicator.style.display = 'none';
                     iframeContent.style.display = 'block';
                 };
             } else {
-                // Show custom form
-                const template = formTemplates[type] || formTemplates.punch;
+                // Custom content (handbook, roadmap)
+                const template = formTemplates[type];
 
-                document.getElementById('modal-title').innerText = template.title;
-                document.getElementById('modal-desc').innerText = template.desc;
+                document.getElementById('modal-title').innerText = t(type + '-modal-title') || template.title;
+                document.getElementById('modal-desc').innerText = t(type + '-modal-desc') || template.desc;
                 fields.innerHTML = template.fields;
 
                 formContent.style.display = 'block';
                 iframeContent.style.display = 'none';
-                successState.style.display = 'none';
+                loadingIndicator.style.display = 'none';
+                loadError.style.display = 'none';
                 modalContainer.classList.remove('iframe-mode');
-
-                // Hide submit button for handbook and roadmap
-                if(type === 'handbook' || type === 'roadmap') {
-                    document.querySelector('#portal-form .btn').style.display = 'none';
-                } else {
-                    document.querySelector('#portal-form .btn').style.display = 'block';
-                }
 
                 lucide.createIcons();
             }
 
+            lastFocusedElement = document.activeElement;
             modal.style.display = 'flex';
+            modalContainer.focus();
         }
 
         function closeModal() {
             modal.style.display = 'none';
+            clearTimeout(iframeLoadTimer);
             // Clear iframe to stop loading
-            document.getElementById('airtable-iframe').src = '';
+            const iframe = document.getElementById('airtable-iframe');
+            iframe.onload = null;
+            iframe.onerror = null;
+            iframe.src = '';
             document.getElementById('modal-container').classList.remove('iframe-mode');
-            // Hide loading indicator
             document.getElementById('modal-loading').style.display = 'none';
+            document.getElementById('modal-load-error').style.display = 'none';
+            if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
+                lastFocusedElement.focus();
+            }
         }
+
+        // Close modal with the Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && modal.style.display === 'flex') {
+                closeModal();
+            }
+        });
 
         function toggleRole(roleId) {
             const detailsEl = document.getElementById(roleId + '-details');
             if (detailsEl) {
                 detailsEl.classList.toggle('expanded');
-            }
-        }
-
-        async function submitForm(e) {
-            e.preventDefault();
-
-            const submitBtn = e.target.querySelector('.btn');
-            const originalText = submitBtn.textContent;
-
-            // Show loading state
-            submitBtn.textContent = 'Submitting...';
-            submitBtn.disabled = true;
-
-            try {
-                // Extract form data
-                const formData = extractFormData(e.target);
-
-                // Submit to Airtable
-                await submitToAirtable(currentFormType, formData);
-
-                // Show success state
-                document.getElementById('modal-form-content').style.display = 'none';
-                document.getElementById('success-state').style.display = 'block';
-                lucide.createIcons();
-
-                // Reset form
-                e.target.reset();
-            } catch (error) {
-                // Show error
-                alert(translations[currentLang]['submit-error'] + '\n\n' + error.message);
-                submitBtn.textContent = originalText;
-                submitBtn.disabled = false;
             }
         }
 
@@ -950,7 +818,15 @@
                 'changefund-desc': 'Request register denominations',
                 'leaderapp-title': 'Leadership Application',
                 'leaderapp-desc': 'Apply for Trainer, Team Leader, or Director roles',
-                'submit-error': 'Submission failed. Please try again or contact a leader.'
+                // Modal chrome
+                'loading-form': 'Loading form...',
+                'close-btn': 'Close',
+                'form-load-error': 'The form could not load. Please check your connection.',
+                'open-new-tab': 'Open form in a new tab',
+                'handbook-modal-title': 'Employee Handbook',
+                'handbook-modal-desc': 'Team Member Handbook - Thornsberry Holdings LLC (January 2024)',
+                'roadmap-modal-title': 'Leadership Roadmap',
+                'roadmap-modal-desc': 'Your career path at CFA Foothill Ranch - Creating REMARKable moments of care by winning hearts every day'
             },
             es: {
                 'nav-home': 'Inicio',
@@ -993,7 +869,15 @@
                 'changefund-desc': 'Solicita denominaciones para la caja registradora',
                 'leaderapp-title': 'Aplicación de Liderazgo',
                 'leaderapp-desc': 'Aplica para roles de Entrenador, Líder de Equipo o Director',
-                'submit-error': 'Error al enviar. Inténtalo de nuevo o contacta a un líder.'
+                // Modal chrome
+                'loading-form': 'Cargando formulario...',
+                'close-btn': 'Cerrar',
+                'form-load-error': 'El formulario no se pudo cargar. Verifica tu conexión.',
+                'open-new-tab': 'Abrir el formulario en una pestaña nueva',
+                'handbook-modal-title': 'Manual del Empleado',
+                'handbook-modal-desc': 'Manual del Miembro del Equipo - Thornsberry Holdings LLC (Enero 2024)',
+                'roadmap-modal-title': 'Ruta de Liderazgo',
+                'roadmap-modal-desc': 'Tu camino profesional en CFA Foothill Ranch - Creando momentos NOTABLES de cuidado ganando corazones cada día'
             }
         };
 

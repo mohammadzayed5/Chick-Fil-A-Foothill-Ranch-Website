@@ -1,6 +1,22 @@
 # Netlify Configuration File
 # https://docs.netlify.com/configure-builds/file-based-configuration/
 
+# Redirects for retired Team Member portal pages (replaced by portal-v2 modals)
+[[redirects]]
+  from = "/tm-portal/portal.html"
+  to = "/tm-portal/portal-v2.html"
+  status = 301
+
+[[redirects]]
+  from = "/tm-portal/team-members/*"
+  to = "/tm-portal/portal-v2.html"
+  status = 301
+
+[[redirects]]
+  from = "/tm-portal/leaders/*"
+  to = "/tm-portal/portal-v2.html"
+  status = 301
+
 # Security and caching headers
 [[headers]]
   for = "/*"
@@ -9,6 +25,8 @@
     X-XSS-Protection = "1; mode=block"
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=(), payment=()"
 
 # Cache images for 8 hours (28800 seconds)
 [[headers]]
