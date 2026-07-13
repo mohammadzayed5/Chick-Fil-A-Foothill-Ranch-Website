@@ -648,15 +648,15 @@
             'leader-app': 'https://form.jotform.com/253016050327041'
         };
 
-        // Spanish versions — replace each PASTE_ placeholder with the embed URL of the
-        // translated Airtable/JotForm form. Until then, Spanish mode falls back to English.
+        // Spanish versions — if a slot is empty string, Spanish mode falls back to English.
+        // leader-app is a JotForm (not Airtable) — needs a separate Spanish JotForm URL.
         const airtableFormsEs = {
-            punch: 'PASTE_SPANISH_PUNCH_URL_HERE',
-            sick: 'PASTE_SPANISH_SICK_URL_HERE',
-            'change-fund': 'PASTE_SPANISH_CHANGE_FUND_URL_HERE',
-            'call-out': 'PASTE_SPANISH_CALL_OUT_URL_HERE',
+            punch: 'https://airtable.com/embed/appoNWAeZT1gCYWB4/shrdhtjq0cTOL8Hxu',
+            sick: 'https://airtable.com/embed/appwoKRkBTPJ8pyy1/shrs1mzGLxHDgnRKj',
+            'change-fund': 'https://airtable.com/embed/appk8daAH4MlCdyyg/shrvXOyW5ahQwOYkF',
+            'call-out': 'https://airtable.com/embed/appoNWAeZT1gCYWB4/shr0nWp6B8ZWbIvcg',
             survey: 'https://airtable.com/embed/appqlDynR1ZpO3OXS/pagYYsP2ROun7GPm5/form',
-            'leader-app': 'PASTE_SPANISH_LEADER_APP_URL_HERE'
+            'leader-app': ''
         };
 
         // Maps form type -> translation key for the modal's accessible title
