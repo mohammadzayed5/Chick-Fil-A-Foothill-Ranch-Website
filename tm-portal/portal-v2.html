@@ -837,8 +837,8 @@
                 desc: 'Team Member Handbook - Thornsberry Holdings LLC (January 2024)',
                 fields: `
                     <style>
-                        /* iOS Safari renders a blank box for an embedded PDF, and the file
-                           is ~13 MB — on phones, link to it instead of embedding it. */
+                        /* iOS Safari renders a blank box for an embedded PDF, so on phones
+                           link to it instead of embedding it. */
                         .handbook-embed { display: block; }
                         .handbook-fallback { display: none; }
                         @media (max-width: 860px) {
@@ -852,7 +852,7 @@
                     </style>
                     <div>
                         <iframe class="handbook-embed" src="handbook.pdf" title="Employee Handbook PDF" style="width: 100%; height: clamp(360px, 58dvh, 620px); border: 1px solid var(--border); border-radius: var(--r-md); background: white;"></iframe>
-                        <p class="handbook-fallback">The handbook is a large PDF (~13&nbsp;MB). Tap below to open it in your phone&rsquo;s PDF viewer.</p>
+                        <p class="handbook-fallback">Tap below to open the handbook in your phone&rsquo;s PDF viewer.</p>
                         <a href="handbook.pdf" download style="display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 14px; padding: 13px; background: var(--surface-sunken); border-radius: var(--r-md); color: var(--text); text-decoration: none; font-weight: 620; font-size: 0.9375rem;">
                             <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
                             Download Handbook PDF
