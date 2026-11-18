@@ -1,96 +1,11 @@
-/* Visit, click and time-on-page tracking for every page. Events go to the
-   portfolio's /api/ask and are stored in Supabase (table ask_events). The same
-   file works unchanged on Mohammad's other sites listed in EVENT_SITES in
-   netlify/functions/ask/ask.mjs. No cookies. Two ids are kept in
-   the browser: one for this tab (ask.sid) and one that stays between visits
-   (ask.vid), so a returning visitor can be recognized. */
-(function () {
-  function stored(store, key, make) {
-    try {
-      var v = store.getItem(key);
-      if (!v && make) {
-        v = make();
-        if (v) store.setItem(key, v);
-      }
-      return v || null;
-    } catch (e) {
-      return null;
-    }
-  }
-  function uuid() { return crypto.randomUUID(); }
-
-  var id = stored(sessionStorage, "ask.sid", uuid);
-  if (!id) return;
-  var vid = stored(localStorage, "ask.vid", uuid);
-
-  // A tagged link looks like mohammadzayed.com/?from=linkedin. The tag is kept
-  // for the whole visit, so later pages and clicks carry it too.
-  var tag = stored(sessionStorage, "ask.tag", function () {
-    try {
-      var q = new URLSearchParams(location.search);
-      var t = q.get("from") || q.get("ref") || q.get("utm_source") || "";
-      var c = q.get("utm_campaign");
-      if (t && c) t += "/" + c;
-      return t.slice(0, 80);
-    } catch (e) {
-      return "";
-    }
-  });
-
-  var here = /(^|\.)mohammadzayed\.com$|^localhost$|^127\./.test(location.hostname);
-  var endpoint = here ? "/api/ask" : "https://mohammadzayed.com/api/ask";
-
-  function send(event, detail, extra) {
-    try {
-      var data = {
-        type: "event", sessionId: id, visitorId: vid, tag: tag || "", event: event,
-        detail: String(detail || "").slice(0, 200),
-        path: location.pathname, ref: document.referrer || "",
-      };
-      if (extra) for (var k in extra) data[k] = extra[k];
-      var body = JSON.stringify(data);
-      // Sent as plain text so another site can post it without a preflight request.
-      if (navigator.sendBeacon) {
-        navigator.sendBeacon(endpoint, body);
-      } else {
-        fetch(endpoint, { method: "POST", body: body, keepalive: true, mode: here ? "same-origin" : "no-cors" });
-      }
-    } catch (e) {}
-  }
-  window.trackEvent = send;
-
-  send("visit");
-  document.addEventListener("click", function (e) {
-    var el = e.target.closest && e.target.closest("[data-track], a[href]");
-    if (!el) return;
-    send("click", el.getAttribute("data-track") || el.getAttribute("href"));
-  }, true);
-
-  // Time on the page (only while the tab is in view) and how far down they got.
-  var shownAt = document.visibilityState === "visible" ? Date.now() : 0;
-  var unsent = 0;
-  var deepest = 0;
-  function measure() {
-    var doc = document.documentElement;
-    var room = doc.scrollHeight - window.innerHeight;
-    var pct = room > 0 ? Math.round((window.scrollY / room) * 100) : 100;
-    if (pct > deepest) deepest = Math.min(pct, 100);
-  }
-  function leave() {
-    if (shownAt) {
-      unsent += Date.now() - shownAt;
-      shownAt = 0;
-    }
-    var seconds = Math.round(unsent / 1000);
-    if (seconds < 1) return;
-    unsent = 0;
-    measure();
-    send("leave", "", { seconds: seconds, scroll: deepest });
-  }
-  window.addEventListener("scroll", measure, { passive: true });
-  document.addEventListener("visibilitychange", function () {
-    if (document.visibilityState === "hidden") leave();
-    else if (!shownAt) shownAt = Date.now();
-  });
-  window.addEventListener("pagehide", leave);
-})();
+/* Visitor analytics for cfafoothill.com (PostHog project CFA Foothill). Replaced the Supabase tracker on 2026-11-17. No session recordings anywhere. On the team portal only page views are counted: no click or form capture, so nothing a team member types or taps is sent. */
+!function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="init capture register register_once register_for_session unregister unregister_for_session getFeatureFlag getFeatureFlagPayload isFeatureEnabled reloadFeatureFlags updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onFeatureFlags onSessionId getSurveys getActiveMatchingSurveys renderSurvey canRenderSurvey identify setPersonProperties group resetGroups setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags reset get_distinct_id getGroups get_session_id get_session_replay_url alias set_config startSessionRecording stopSessionRecording sessionRecordingStarted captureException loadToolbar get_property getSessionProperty createPersonProfile opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing clear_opt_in_out_capturing debug getPageViewId captureTraceFeedback captureTraceMetric".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+posthog.init('phc_ya5zJoqVvtSULUXXgUg7G6g7NciMvxtUickKmWg5LMZN', {
+  api_host: 'https://us.i.posthog.com',
+  person_profiles: 'identified_only',
+  capture_pageview: true,
+  capture_pageleave: true,
+  disable_session_recording: true,
+  persistence: 'localStorage',
+  autocapture: !/^\/tm-portal(\/|$)/.test(location.pathname),
+});
